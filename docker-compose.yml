@@ -1,0 +1,26 @@
+version: "3.1"
+
+services:
+  #redis:
+    #Redis service here
+  backend:
+    image: nginx:1.15.2-alpine
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/code
+      - ./backend/site.conf:/etc/nginx/conf.d/site.conf
+  php:
+    image: php:7-fpm
+    volumes:
+      - ./backend:/code
+    environment:
+      - TMDB_API_KEY=fcf049aaeafe3ad83ee5ff9e33bb786b
+  frontend:
+    image: node:10.9.0-alpine
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    command: npm start
